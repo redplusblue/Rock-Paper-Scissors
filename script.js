@@ -1,6 +1,9 @@
 // Author : Samir Kaba
 // This program simulates a Rock Paper Scissors game with the computer in the console using JavaScript.
 
+let userScore = 0;
+let computerScore = 0;
+let round = 1;
 /*
 This function returns the choice of the computer (Randomly Generated.) 
 */
@@ -16,6 +19,11 @@ function computerPlay() {
 This function takes in the user's choice shows win/loss prompt.
 */
 function playGame(userSelection) {
+    if (round > 5) {
+        winner()
+        return
+        } 
+    
     computerSelection = computerPlay()
 
     if (userSelection.toUpperCase() == "ROCK") {
@@ -46,27 +54,62 @@ function playGame(userSelection) {
         message("invalid")
     }
 
-    /*
-    This function takes in the outcome and displays an alert appropriately.
-    */
     function message(outcome) {
+
+        resultDiv = document.getElementById('results')
+    
         if (outcome == "user") {
-            alert(`You win!\nUser Choice: ${userSelection}.\nComputer Choice: ${computerSelection}.\n\nAs ${userSelection} > ${computerSelection}`)
+            resultDiv.innerHTML = `You win!<br/>User Choice: ${userSelection}.<br/>Computer Choice: ${computerSelection}.<br/><br/>As ${userSelection} > ${computerSelection}`
+            scoreTracker(1)
         } else if (outcome == "computer") {
-            alert(`Computer wins!\nUser Choice: ${userSelection}.\nComputer Choice: ${computerSelection}.\n\nAs ${computerSelection} > ${userSelection}`)
-        } else if (outcome == "tie"){
-            alert(`Its a tie!\nUser Choice: ${userSelection}.\nComputer Choice: ${computerSelection}.\n\nAs ${computerSelection} = ${userSelection}`)
+            resultDiv.innerHTML = `Computer wins!<br/>User Choice: ${userSelection}.<br/>Computer Choice: ${computerSelection}.<br/><br/>As ${computerSelection} > ${userSelection}`
+            scoreTracker(-1)
         } else {
-            alert(`\"${userSelection}\" is an invalid choice! Pick one out of Rock/Paper/Scissors!`)
+            resultDiv.innerHTML = `Its a tie!<br/>User Choice: ${userSelection}.<br/>Computer Choice: ${computerSelection}.<br/><br/>As ${computerSelection} = ${userSelection}`
+            scoreTracker(0)
         }
     }
+
+    function scoreTracker(number) {
+        
+        if (number >= 0){
+            userScore += number;
+            if (number == 0){
+                win = "TIE GAME"
+            } else {
+                win = "YOU WIN!"
+            }
+        } else {
+            computerScore -= number;
+            win = "YOU LOSE"
+        } 
+
+        scoreDiv = document.getElementById('score')
+
+        scoreDiv.innerHTML += `<br/> Round: ${round} &emsp; Your Score: <b>${userScore}</b> &emsp; Computer's Score: <b>${computerScore}</b> &emsp; --${win}`
+        round += 1;
+    }
+
+    function winner() {
+        if(userScore > computerScore) {
+            scoreDiv.innerHTML = "You Win!!"
+            resultDiv.innerHTML = "Reload to Play Again!"
+            return
+        } else if(computerScore > userScore) {
+            scoreDiv.innerHTML = "Computer Wins!!"
+            resultDiv.innerHTML = "Reload to play Again!"
+            return
+        } else {
+            scoreDiv.innerHTML = "Tie Game!!"
+            resultDiv.innerHTML = "Reload to play Again"
+            return
+        }
+
+}
 }
 
-//Welcome message on console
-console.log("Welcome to the Rock/Paper/Scissors game!")
 
-//Prompt for user input
-const userSelection = window.prompt("Enter your choice: ")
 
-//Calling the playGame() function and passing in user's input
-playGame(userSelection)
+function userInput(choice){
+    playGame(choice)
+}
