@@ -1,23 +1,20 @@
-// Author : Samir Kaba
-// This program simulates a Rock Paper Scissors game with the computer in the console using JavaScript.
-
 let userScore = 0;
 let computerScore = 0;
 let round = 1;
-/*
-This function returns the choice of the computer (Randomly Generated.) 
-*/
+let playButtons = document.querySelectorAll('#play-btn');
+let reloadButton = document.getElementById('reload-btn');
+
+reloadButton.addEventListener('click', () => {
+    location.reload()
+})
+
 function computerPlay() {
     const choices = ["Rock", "Paper", "Scissors"];
-    //choice = random number in the range [0, choices.length]
     let choice = Math.floor(Math.random() * choices.length);
     result = choices[choice];
     return result
 }
 
-/*
-This function takes in the user's choice shows win/loss prompt.
-*/
 function playGame(userSelection) {
     if (round > 5) {
         winner()
@@ -94,21 +91,19 @@ function playGame(userSelection) {
         if(userScore > computerScore) {
             scoreDiv.innerHTML = "You Win!!"
             resultDiv.innerHTML = "Reload to Play Again!"
-            return
         } else if(computerScore > userScore) {
             scoreDiv.innerHTML = "Computer Wins!!"
             resultDiv.innerHTML = "Reload to play Again!"
-            return
         } else {
             scoreDiv.innerHTML = "Tie Game!!"
             resultDiv.innerHTML = "Reload to play Again"
-            return
         }
-
+        for(let i = 0; i < playButtons.length; i++) {
+            playButtons[i].style.display = 'none';
+        }
+        reloadButton.style.display = 'block';
 }
 }
-
-
 
 function userInput(choice){
     playGame(choice)
